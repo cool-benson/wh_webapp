@@ -1,0 +1,24 @@
+version: '0'
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: docker_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ../server/database:/docker-entrypoint-initdb.d/
+  api:
+    build: ../server/api
+    container_name: docker_api
+    restart: always
+    volumes:
+      - ../server:/server
+    ports:
+      - "8000:8000"
+    links:
+      - database
+
+  
